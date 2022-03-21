@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://i.pinimg.com/originals/81/52/d7/8152d785079b8254b79fac7b1f2175df.jpg">
+    <link rel="stylesheet" href="Variables.css">
+    <title>The Meals Database</title>
+</head>
+<body>
+    <header style="height: 100px;"></header>
+    <div class="container">
+
+        <div class="header">
+            <h1>Welcome to <br> The Meals Database</h2>
+            <p>Welcome to The Meals Database, The place where you can find about Food Receipes, its Usage, Ingredients and also Instructions to make the Food item.
+            </p>
+        </div>
+        <h2 id="suggestions" >Suggested Meal Categories</h2>
+        <div class="suggested-category-list">
+
+        </div>
+
+        <h2 id="suggestions-meal" >Suggested Meal Items</h2>
+        <div class="suggested-category-list-meal">
+
+        </div>
+
+    </div>
+</body>
+</html>
+<script src="Helper.js"></script>
+<script>
+    const visibleScreenWidth = window.visualViewport.width;
+    
+    GetWidthAndShowCategories();
+    GetWidthAndShowMealItems();
+
+    async function GetWidthAndShowCategories(params) {
+        const parent = document.querySelector('.suggested-category-list');
+        if (visibleScreenWidth < 750) {
+            await ShowSuggestedCategories(parent, 3);
+                return;
+        }
+        await ShowSuggestedCategories(parent, 5);
+    }
+
+    async function GetWidthAndShowMealItems() {
+        const parent = document.querySelector(".suggested-category-list-meal");
+        if (visibleScreenWidth < 750) {
+            await ShowSuggestedMeals(parent, 4);
+            return
+        }
+        await ShowSuggestedMeals(parent, 6);
+    }
+</script>
+<style>
+    body {
+        background-color: var(--white-color);
+    }
+    .container {
+        width: 90%;
+        min-height: 50vh;
+        margin: auto;
+    }
+    .header {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        text-align: center;
+        gap: 1.5rem;
+    }
+    .header img {
+        width: clamp(40px, 100%, 200px);
+        height: clamp(40px, 100%, 200px);
+    }
+    .header p {
+        font-size: larger;
+        font-weight: 500;
+    }
+    h1 {
+        font-size: clamp(24px, 100%, 70px);
+    }
+    #suggestions {
+        font-size: clamp(22px, 100%, 80px);
+        padding: 3rem 0;
+        text-align: center;
+        color: var(--text-light-color);
+    }
+    .suggested-category-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+    #suggestions-meal {
+        font-size: clamp(22px, 100%, 80px);
+        padding: 3rem 0;
+        text-align: center;
+        color: var(--text-light-color);
+    }
+    .other-suggestion-details {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+    .suggested {
+        width: 45%;
+        text-align: center;
+        margin: auto;
+        flex-wrap: wrap;
+    }
+    .suggested-category-list-meal {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .suggested-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-radius: 10px;
+        width: 350px;
+        height: 385px;
+        background-color: var(--white-color);
+        box-shadow: 0px 3px 15px var(--shadow-color);
+        text-align: center;
+        overflow: hidden;
+    }
+    .suggested-card img {
+        width: inherit;
+        height: 250px;
+        object-fit: cover;
+    }
+    .suggested-card a, .btn {
+        text-decoration: none;
+        background-color: var(--bright-color);
+        padding: 10px;
+        border-radius: 45px;
+        color: var(--white-color);
+        margin: 4px auto;
+        transition: background-color ease-in-out 250ms;
+    }
+    .suggested-card a {
+        width: 50%;
+    }
+    .suggested-card a:hover, .btn:hover {
+        background-color: var(--bright-color-hover);
+    }
+    @media screen and (max-width: 830px) {
+        .header img {
+            width: clamp(40px, 100%, 100px);
+            height: clamp(40px, 100%, 100px);
+        }
+    }
+</style>

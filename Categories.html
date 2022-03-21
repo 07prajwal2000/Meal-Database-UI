@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="Variables.css">
+  <link rel="icon" href="https://i.pinimg.com/originals/81/52/d7/8152d785079b8254b79fac7b1f2175df.jpg">
+  <title>Meals DB | Categories</title>
+</head>
+
+<body>
+  <div class="main">
+  
+    <header style="height: 100px;"></header>
+    <h1 id="head">CATEGORIES</h1>
+    <div id="elements">
+
+      <!-- <div class="card" data-id=${d.idCategory}>
+        <h2>Beef</h2>
+        <div class="card-child">
+          <img width="150" height="90" src="${d.strCategoryThumb}" alt="Food Image">
+          <p>
+            >${d.strCategoryDescription.substring(0, 150)} ....
+          </p>
+        </div>
+        <a id="show-btn" href="FoodItems.html?category=${d.strCategory}">Show Items</a>
+      </div> -->
+
+    </div>
+
+  </div>
+
+  <div class="error" style="display: none;">
+    <h1 style="text-align: center; color: var(--bright-color); ">Error Nothing Found</h1>
+  </div>
+
+</body>
+
+</html>
+<script src="Helper.js"></script>
+<script>
+  const errorElement = document.querySelector('.error');
+  const mainElement = document.querySelector('.main');
+
+  FetchData();
+  function FetchData() {
+    fetch('https://www.themealdb.com/api/json/v1/1/categories.php')
+      .then(res => {
+        if (!res.ok) {
+          errorElement.styles.display = "block";
+          mainElement.styles.display = "none";
+        }
+        return res.json();
+      })
+      .then(data => {
+        data.categories.map(d => {
+          let parent = document.createElement("div");
+
+          document.querySelector('#elements').innerHTML += `
+          <div class="card" data-id=${d.idCategory}>
+            <h2>${d.strCategory}</h2>
+            <div class="card-child">
+              <img width="150" height="90" src="${d.strCategoryThumb}" alt="Food Image">
+              <p>
+                ${d.strCategoryDescription.substring(0, 150)} ....
+              </p>
+            </div>
+            <a id="show-btn" href="FoodItems.html?category=${d.strCategory}">Show Items</a>
+          </div>
+                `;
+        });
+      });
+    }
+</script>
+
+<style>
+    /* 
+    --noto-sans
+    --poppins-500
+    --source-sans
+
+    --text-dark-color
+    --text-light-color
+    --shadow-color
+    --bright-color
+    --white-color
+    */
+
+  body {
+    background-color: var(--white-color);
+  }
+  a {
+    text-decoration: none;
+    color: currentColor;
+  }
+  #head {
+    padding: 0;
+    margin: 10px;
+    text-align: center;
+    font-size: 40px;
+    color: var(--text-dark-color);
+  }
+  #elements {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    gap: 18px;
+    width: 85%;
+    align-items: center;
+    margin: auto;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  .card{
+    background-color: var(--white-color);
+    box-shadow: 3px 3px 8px var(--shadow-color);
+    padding: 4px 12px;
+    border-radius: 15px;
+    width: 320px;
+    transition: transform ease-in-out 200ms;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .card:hover {
+    transform: scale(102%);
+  }
+  .card-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .card h2{
+    color: var(--text-dark-color);
+    text-align: center;
+    padding: 0;
+    margin: 8px;
+  }
+  .card p{
+    color: var(--text-light-color);
+  }
+  #show-btn {
+    background-color: var(--bright-color);
+    padding: .7rem;
+    margin: .8rem;
+    text-align: center;
+    width: 75%;
+    border-radius: 40px;
+    color: var(--white-color);
+    box-shadow: 1.2px 1.2px 6px var(--shadow-color);
+    transition: background-color ease-in-out 200ms;
+  }
+  #show-btn:hover {
+    background-color: var(--bright-color-hover);
+  }
+
+  @media screen and (max-width: 980px) {
+    #elements {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+</style>

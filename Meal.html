@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Variables.css">
+    <link rel="icon" href="https://i.pinimg.com/originals/81/52/d7/8152d785079b8254b79fac7b1f2175df.jpg">
+    <title>Meals DB | Meal</title>
+</head>
+<body>
+    <header style="height: 100px;"></header>
+    <div class="container">
+    
+        <div class="meal">
+            <h1 class="name">Name of the food.</h1>
+            <div class="data">
+                
+                <img id="image" src="" 
+                    alt="Meal Image Loading...">
+
+                <div class="data-secondary">
+                    <div><p class="heading" style="padding: 0; margin: 0;">Category</p> <h3 id="category" style="padding: 0; margin: 0;" >Beef</h3></div>
+                    <div> <p class="heading">Area</p> <h4 id="area" >India</h4></div>
+                    <div>
+                        <p class="heading">Tags</p> 
+                        <div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 5px;" class="tags-parent"></div>
+                    </div>
+                    <p>For Video Explaination <a id="youtube-link" href="">Click here</a></p>
+                </div>
+
+            </div>
+
+            <div class="recipe">
+                <h2>Method</h2>
+                <p id="desc"></p>
+                <table>
+                    <tr>
+                        <th>Ingredient</th>
+                        <th>Quantity</th>
+                    </tr>
+                    <!-- <tr class="table-row">
+                        <td>Ingredient 1</td>
+                        <td>Measure 1</td>
+                    </tr> -->
+                </table>
+            </div>
+        </div>
+    
+        <div class="suggested">
+            <h1>Suggestions</h1>
+            <div class="items"></div>
+        </div>
+
+    </div>
+
+    <footer style="width: 85%; margin: auto;" >
+        <h1 style="text-align: center; margin: 30px;" >Suggested Categories</h1>
+        <div class="elements"></div>
+        <!-- <div class="suggested-category">
+            <img src="./wvpsxx1468256321.jpg" alt="">
+            <h1>Name</h1>
+            <a class="btn" href="#">Show Meals</a>
+        </div> -->
+
+    </footer>
+
+</body>
+</html>
+<script src="./Helper.js"></script>
+<script>
+
+    const mealId = queryParameters["mealid"];
+
+    const name = document.querySelector('.name');
+    const description = document.querySelector('#desc');
+    const category = document.querySelector('#category');
+    const image = document.querySelector('#image');
+    const area = document.querySelector('#area');
+    const tagsParent = document.querySelector('.tags-parent');
+    const youtubeLink = document.querySelector('#youtube-link');
+    const table = document.querySelector('table');
+    
+    const suggestedItems = document.querySelector('.suggested .items');
+    const footer = document.querySelector('footer .elements');
+    
+    ShowData(mealId);
+    ShowSuggestedMeals(suggestedItems);
+    ShowSuggestedCategories(footer);
+
+    async function FetchData(id) {
+        const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+        const fetchData = await fetch(url);
+        const response = await fetchData.json();
+        return response;
+    }
+
+    async function ShowData(id) {
+        const data = await FetchData(id);
+        const meal = data.meals[0];
+
+        name.innerHTML = meal.strMeal;
+        description.innerHTML = meal.strInstructions;
+        category.innerHTML = meal.strCategory;
+        image.setAttribute("src", meal.strMealThumb);
+        area.innerHTML = meal.strArea;
+        
+        const tags = meal?.strTags?.split(',');
+        let tagString = "";
+        for (let i = 0; i < tags?.length; i++) {
+            tagString += `
+            <h5 class="tags">${tags[i]}</h5>
+            `;
+        }
+        tagsParent.innerHTML = tags === null || tags === undefined ? "<p>None</p>" : tagString;
+
+        youtubeLink.setAttribute("href", meal.strYoutube);
+
+        for (let i = 1; i <= 20; i++) {
+            const ingredient = meal["strIngredient" + i];
+            const measure = meal["strMeasure" + i];
+            if (ingredient === "" || measure === "") {
+                break;
+            }
+
+            table.innerHTML += `
+            <tr class="table-row">
+                <td>${ingredient}</td>
+                <td>${measure}</td>
+            </tr>
+            `;
+        }
+    }
+
+</script>
+
+<style>
+    /* 
+    --noto-sans
+    --poppins-500
+    --source-sans
+
+    --text-dark-color
+    --text-light-color
+    --shadow-color
+    --bright-color
+    --white-color
+    */
+    body {
+        background-color: var(--white-color);
+    }
+    .container {
+        width: 85%;
+        margin: auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 2rem;
+    }
+    .data {
+        display: flex;
+        flex-direction: row;
+        gap: 3rem;
+        justify-content: flex-start;
+    }
+    .data img {
+        width: 70%;
+        height: 380px;
+        object-fit: cover;
+    }
+    .data-secondary {
+        display: flex;
+        gap: 20px;
+        flex-direction: column;
+    }
+    .data-secondary p, h3, h4 {
+        padding: 0px;
+        margin: 0px;
+    }
+    .meal {
+        width: 100%;
+    }
+    .meal h1 {
+        font-family: var(--poppins-300);
+    }
+    .heading {
+        font-family: var(--source-sans);
+    }
+    table {
+        margin: 3rem;
+        width: 80%;
+        border-collapse: collapse;
+    }
+    td, th {
+        border: 1px solid var(--shadow-color);
+        padding: 8px 15px;
+        text-align: start;
+    }
+    .table-row:nth-child(even) {
+        background-color: rgb(255, 241, 207);
+    }
+    .table-row:hover {
+        background-color: rgb(195, 255, 195);
+    }
+    td {
+        font-family: var(--poppins-300);
+    }
+    th {
+        font-family: var(--noto-sans);
+        font-size: large;
+    }
+    .tags {
+        border: 2px solid coral;
+        padding: 4px 8px;
+        margin: 5px 0;
+        border-radius: 50px;
+        text-align: center;
+        min-width: 30px;
+    }
+    .suggested {
+        width: 45%;
+        text-align: center;
+        margin: auto;
+        flex-wrap: wrap;
+    }
+    .suggested .items {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
+    .suggested-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-radius: 10px;
+        width: 350px;
+        height: 385px;
+        background-color: var(--white-color);
+        box-shadow: 0px 3px 15px var(--shadow-color);
+        text-align: center;
+        overflow: hidden;
+    }
+    .suggested-card img {
+        width: inherit;
+        height: 250px;
+        object-fit: cover;
+    }
+    .suggested-card a, .btn {
+        text-decoration: none;
+        background-color: var(--bright-color);
+        padding: 10px;
+        border-radius: 45px;
+        color: var(--white-color);
+        margin: 4px auto;
+        transition: background-color ease-in-out 250ms;
+    }
+    .suggested-card a {
+        width: 50%;
+    }
+    .suggested a:hover, .btn:hover {
+        background-color: var(--bright-color-hover);
+    }
+    .other-suggestion-details {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+    
+    @media screen and (max-width: 830px) {
+        .container {
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: auto;
+        }
+        .suggested {
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        .suggested-card {
+            width: 260px;
+        }
+        .suggested .items {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        footer .elements { 
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        .data {
+            flex-direction: column;
+        }
+        .data img {
+            width: 100%;
+        }
+    }
+</style>

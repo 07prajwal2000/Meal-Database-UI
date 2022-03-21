@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@1,500&display=swap');
+
+:root {
+    --text-dark-color: rgb(28, 28, 28);
+    --text-light-color: rgb(29, 29, 29);
+    --shadow-color: rgba(38, 38, 38, 0.378);
+    --bright-color: rgb(255, 123, 0);
+    --bright-color-hover: rgb(255, 81, 0);
+    --white-color: rgb(240, 240, 240);
+
+    --noto-sans: 'Noto Sans', sans-serif; /* for h1 h2 */
+    --poppins-300: 'Poppins', sans-serif; /* h3 .. h6 */
+    --source-sans: 'Source Sans Pro', sans-serif; /* for paragraphs */
+}
+
+h1, h2 {
+    font-family: var(--noto-sans);       
+}
+
+h3, h4, h5, h6 {
+    font-family: var(--poppins-300);
+}
+
+h3 { font-size: medium; }
+
+p, a {
+    font-family: var(--source-sans);
+    color: currentColor;
+    font-size: medium;
+}
+footer .elements {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: space-evenly;    
+}
+.suggested-category {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-between;
+    background-color: var(--white-color);
+    box-shadow: 3px 3px 10px var(--shadow-color);
+    overflow: hidden;
+    border-radius: 15px;
+    width: 230px;
+    height: 300px;
+    transition: transform ease-in-out 0.2s;
+    margin: auto;
+}
+.suggested-category:hover { transform: scale(101.5%); }
+.suggested-category a {
+    width: 50%;
+    margin: auto;
+}
+.suggested-category img { width: inherit; }
+@media screen and (max-width: 830px) {
+    footer .elements { flex-direction: column; }
+}
